@@ -27,6 +27,8 @@ public class PlayerMove : MonoBehaviour
     float camWidth;
     float playerHalfWidth;
     float playerHalfHeight;
+
+    GameObject goWalls;
   
     public float interval;      //==> 너무 스크린에 붙지 않도록 하게 살짝 간격 
 
@@ -36,6 +38,8 @@ public class PlayerMove : MonoBehaviour
         //원래 선언 하려면 일케 해야함. 
         //tr = GetComponent<Transform>();
 
+        goWalls = GameObject.FindGameObjectWithTag("Wall");
+        goWalls.SetActive(false);
         camHeight = Camera.main.orthographicSize;
         camWidth = camHeight * Screen.width / Screen.height;
 
@@ -85,20 +89,28 @@ public class PlayerMove : MonoBehaviour
         //Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
         //transform.position = new Vector3(Mathf.Clamp(transform.position.x, -camWidth, camWidth), Mathf.Clamp(transform.position.y, -camHeight, camHeight), 0);
 
+        //1번 ====================================================================
+        //create에서 cube 4개를 만들어 벽을 맞춰 생성. 
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            goWalls.SetActive(!goWalls.activeSelf);
+        }
+
         //2번 ====================================================================
-        //if (transform.position.x < -0.45f)
-        //    transform.position = new Vector3(-0.45f, transform.position.y, transform.position.z);
-        //if (transform.position.x > 4.5f)
-        //    transform.position = new Vector3(4.5f, transform.position.y, transform.position.z);
-        //if (transform.position.y < -4.45f)
-        //    transform.position = new Vector3(-4.45f, transform.position.y, transform.position.z);
-        //if (transform.position.y > 4.45f)
-        //    transform.position = new Vector3(4.45f, transform.position.y, transform.position.z);
+        if (transform.position.x < -4.5f)
+            transform.position = new Vector3(-4.5f, transform.position.y, transform.position.z);
+        if (transform.position.x > 4.5f)
+            transform.position = new Vector3(4.5f, transform.position.y, transform.position.z);
+        if (transform.position.y < -4.5f)
+            transform.position = new Vector3(transform.position.x, -4.5f, transform.position.z);
+        if (transform.position.y > 4.5f)
+            transform.position = new Vector3(transform.position.x, 4.5f, transform.position.z);
 
 
         //3번 ====================================================================
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -camWidth + playerHalfWidth + interval, camWidth - playerHalfWidth - interval), 
-            Mathf.Clamp(transform.position.y, -camHeight + playerHalfHeight + interval, camHeight - playerHalfHeight - interval), transform.position.z);
+       // transform.position = new Vector3(Mathf.Clamp(transform.position.x, -camWidth + playerHalfWidth + interval, camWidth - playerHalfWidth - interval), 
+       //     Mathf.Clamp(transform.position.y, -camHeight + playerHalfHeight + interval, camHeight - playerHalfHeight - interval), transform.position.z);
 
        
 
