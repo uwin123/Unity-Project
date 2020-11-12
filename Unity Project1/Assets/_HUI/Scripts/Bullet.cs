@@ -10,10 +10,15 @@ public class Bullet : MonoBehaviour
     public float speed = 10.0f;
     public float bulletAppearCount = 1.0f;
     public float bulletShootCoolTime = 0.0f;
+    public GameObject target;
    
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);       //--> 생성이 되자마자 총알이 위로 날라가는 거,
+        if(gameObject.tag == "Player" || gameObject.tag == "SubPlayer")
+            transform.Translate(Vector3.up * speed * Time.deltaTime);       //--> 생성이 되자마자 총알이 위로 날라가는 거,
+        else if(gameObject.tag == "Enemy")
+            transform.Translate(Vector3.down * speed * Time.deltaTime);
+
         bulletDestroy();
     }
 

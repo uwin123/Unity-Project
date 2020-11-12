@@ -14,22 +14,23 @@ public class PlayerMove : MonoBehaviour
     //public ==> 인스펙트 창에 변수가 노출된다.
     //기본은 private -> 
     public float speed = 5.0f;
-    
+    public float hp;
    
-
     //Rigidbody rigid = null;
 
     //보통 접근하려고하면, 밑에 처럼 선언하고, 해야하는데 트랜스폼은 자주사용해서 필요 X
     Transform tr;
-
 
     float camHeight;
     float camWidth;
     float playerHalfWidth;
     float playerHalfHeight;
 
+    //float curTime = 0.0f;                       //누적 경과시간 
+    //public float fireTime = 1.0f;               //1초에 한 발씩 총알 발사
+
     GameObject goWalls;
-    GameObject[] SubPlayer = new GameObject[2];
+    GameObject[] SubPlayer;
 
 
     public float interval;      //==> 너무 스크린에 붙지 않도록 하게 살짝 간격 
@@ -58,7 +59,8 @@ public class PlayerMove : MonoBehaviour
 
         //서브 플레이어 선언
         SubPlayer = GameObject.FindGameObjectsWithTag("SubPlayer");
-        for (int i = 0; i < 2; i++)
+
+        for (int i = 0; i < SubPlayer.Length; i++)
         {
             SubPlayer[i].SetActive(false);
         }
@@ -181,10 +183,51 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < SubPlayer.Length; i++)
             {
-                SubPlayer[i].SetActive(true);
+                //SubPlayer[i].SetActive(true);
+                //스페이스를 토글키로 만들자. 
+                if (SubPlayer[i].activeSelf)
+                    SubPlayer[i].SetActive(false);
+                else
+                    SubPlayer[i].SetActive(true);
             }
+        }
+    }
+
+    //void AutoFire()
+    //{
+    //    for (int i = 0; i < SubPlayer.Length; i++)
+    //    {
+    //        if(SubPlayer[i].activeSelf)
+    //        {
+    //            //일정시간이 흐르면 총알을 발사해야 한다.
+    //            curTime += Time.deltaTime;
+    //            if(curTime > fireTime)
+    //            {
+    //                //당연히 누적시간은 0으로 초기화 해줘야 함.
+    //                curTime = 0.0f;
+    //                GameObject bullet = Instantiate(bulletFactory);
+    //                bullet.transform.position = GameObject.Find("Sub1").transform.position;
+    //
+    //                bullet.transform.position = SubPlayer.transform.Find("Sub1").position;
+    //
+    //                bullet.transform.position = Sublplayer.transform.GetChild(0).position;
+    //            }
+    //        }
+    //    }
+    //}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Enemy")
+        {
+            hp -= 3;
+            if(hp < 0)
+            {
+                gameObject.SetActive(false);
+            }
+            collision.gameObject.SetActive(false);
         }
     }
 }

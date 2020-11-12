@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    public GameObject bulletFactory;        //총알 공장(프리팹)
-    //public GameObject firePoint;            //총알 발사위치 (1)
-    //or
+    public GameObject bulletFactory;            //총알 공장(프리팹)
     public Transform firePoint;     //총알 발사위치 (2)
-
 
     void Update()
     {
@@ -28,14 +25,10 @@ public class PlayerFire : MonoBehaviour
             //총알 오브젝트의 위치 지정. 
             //bullet.transform.position = transform.position;     //->플레이어 위치에 넣어줘야함. 
             bullet.transform.position = firePoint.transform.position;
+            bullet.tag = "Player";
         }
         //GetMouseButton(0) =>마우스 왼쪽버튼
         //GetMouseButton(1) =>마우스 오른쪽버튼
         //GetMouseButton(2) =>마우스 미들버튼(휠)
-        //if (Input.GetMouseButton(0))
-        //{
-        //
-        //}
-
     }
 }
